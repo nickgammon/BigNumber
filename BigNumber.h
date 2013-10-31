@@ -106,6 +106,8 @@ public:
   BigNumber pow (const BigNumber power) const;
   // divide number by divisor, give quotient and remainder
   void divMod (const BigNumber divisor, BigNumber & quotient, BigNumber & remainder) const;
+  // raise number by power, modulus modulus
+  BigNumber powMod (const BigNumber power, const BigNumber & modulus) const;
   
 };  // end class declaration
 

@@ -232,3 +232,11 @@ void BigNumber::divMod (const BigNumber divisor, BigNumber & quotient, BigNumber
 {
   bc_divmod (num_, divisor.num_, &quotient.num_, &remainder.num_, scale_);
 }
+
+// raise number by power, modulus modulus
+BigNumber BigNumber::powMod (const BigNumber power, const BigNumber & modulus) const
+{
+  BigNumber result;
+  bc_raisemod (num_, power.num_, modulus.num_, &result.num_, scale_);
+  return result;
+}
