@@ -3,9 +3,10 @@
 //  
 //  Author:  Nick Gammon
 //  Date:    22nd January 2013.
-//  Version: 3.0
+//  Version: 3.1
 //  Released into the public domain.
 //  Added print function as suggested by Paul Stoffregen.
+//  Changed printTo to return the length, as required.
 
 #include "BigNumber.h"
 
@@ -98,8 +99,9 @@ BigNumber::operator long () const
 size_t BigNumber::printTo(Print& p) const
 {
   char *buf = bc_num2str(num_);
-  p.write(buf);
+  size_t len = p.write(buf);
   free(buf);
+  return len;
 }
 
 // add
