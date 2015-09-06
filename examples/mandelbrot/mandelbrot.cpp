@@ -7,12 +7,19 @@
 
 #include "BigNumber.h"
 
+#ifdef FAST
+#define NX 40
+#define NY 30
+#define MAX_IT 80
+#else
 #define NX 640
 #define NY 480
+#define MAX_IT 256
+#endif
 
 int main(int argc, char *argv[])
 {
-	BigNumber::begin(16);
+	BigNumber::begin(128);
 
 	BigNumber two(2.0), radius(16.0);
 	BigNumber bbx1(-2.0), bbx2(2.0);
@@ -22,19 +29,20 @@ int main(int argc, char *argv[])
 	BigNumber dx((bbx2 - bbx1) / NXBN);
 	BigNumber dy((bby2 - bby1) / NYBN);
 
+	printf("P6 %d %d %d\n", NX, NY, MAX_IT - 1);
+
+	BigNumber cy(bby1);
 	for(int y=0; y<NY; y++)
 	{
+		fprintf(stderr, "%d\n", NY - y);
+
+		BigNumber cx(bbx1);
+
 		for(int x=0; x<NX; x++)
 		{
-			BigNumber bnx(x);
-			BigNumber bny(y);
-			BigNumber cx(dx * bnx + bbx1);
-			BigNumber cy(dy * bny + bby1);
-			BigNumber wx(0), wy(0);
+			int it = MAX_IT;
 
-			int it = 80;
-
-			BigNumber xsq(0), ysq(0);
+			BigNumber wx, wy, xsq, ysq;
 			do
 			{
 				BigNumber z = xsq - ysq + cx;
@@ -48,8 +56,18 @@ int main(int argc, char *argv[])
 			}
 			while(it > 0 && xsq + ysq <= radius);
 
-			printf("%d,%d: %d\n", x, y, it);
+			char *wx_str = wx.toString();
+			char *wy_str = wy.toString();
+
+			printf("%c%c%c", it - atoi(wx_str), it, it - atoi(wy_str));
+
+			free(wy_str);
+			free(wx_str);
+
+			cx += dx;
 		}
+
+		cy += dy;
 	}
 
 	return 0;
