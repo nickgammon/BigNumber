@@ -10,31 +10,43 @@
 
 #include "BigNumber.h"
 
-int BigNumber::scale_ = 0;
+uint16_t BigNumber::scale_ = 0;
 
 // constructor
-BigNumber::BigNumber () : num_ (NULL)
-{
+BigNumber::BigNumber () : num_ (NULL) {
   bc_init_num (&num_);  // default to zero
 } // end of constructor from string
 
 // constructor
-BigNumber::BigNumber (const char * s) : num_ (NULL)
-{
+BigNumber::BigNumber (const char *const s) : num_ (NULL) {
   bc_str2num(&num_, s, scale_);
 } // end of constructor from string
 
-BigNumber::BigNumber (const int n) : num_ (NULL)  // constructor from int
-{
-  bc_int2num (&num_, n);
+BigNumber::BigNumber (const int32_t n) : num_ (NULL) {
+  bc_int32_2num (&num_, n);
 } // end of constructor from int
 
+BigNumber::BigNumber(const uint32_t n) : num_ (NULL) {
+  bc_uint32_2num(&num_, n);
+}
+
+BigNumber::BigNumber(const int64_t n) : num_ (NULL) {
+  bc_int64_2num(&num_, n);
+}
+
+BigNumber::BigNumber(const uint64_t n) : num_ (NULL) {
+  bc_uint64_2num(&num_, n);
+}
+
+BigNumber::BigNumber(const double n) : num_ (NULL) {
+  bc_double2num(&num_, n);
+}
+
 // copy constructor
-BigNumber::BigNumber (const BigNumber & rhs)
-  {
+BigNumber::BigNumber (const BigNumber & rhs) {
   if (this != &rhs)
     num_ = bc_copy_num (rhs.num_);
-  }  // end of BigNumber::BigNumber
+}  // end of BigNumber::BigNumber
   
 //operator=
 BigNumber & BigNumber::operator= (const BigNumber & rhs)
@@ -55,21 +67,18 @@ BigNumber::~BigNumber ()
 } // end of destructor
 
 // set scale factor (number of places after the decimal point)
-int BigNumber::setScale (const int scale)
+int BigNumber::setScale (const uint16_t scale)
 {
-  int old_scale = scale_;
-  if (scale >= 0)
-    scale_ = scale;
-  else
-    scale_ = 0;
+  uint16_t old_scale = scale_;
+  scale_ = scale;
   return old_scale;
 }  // end of BigNumber::setScale
 
 // initialize package
 // supply scale (number of decimal places): default zero
-void BigNumber::begin (const int scale)
+void BigNumber::begin (const uint16_t scale)
 {
-  bc_init_numbers ();
+  bc_init_numbers();
   scale_ = scale;
 } // end of BigNumber::begin
 
@@ -96,6 +105,7 @@ BigNumber::operator long () const
 } // end of BigNumber::operator long
 
 // Allow Arduino's Serial.print() to print BigNumber objects!
+#ifndef NOT_ARDUINO
 size_t BigNumber::printTo(Print& p) const
 {
   char *buf = bc_num2str(num_);
@@ -103,6 +113,7 @@ size_t BigNumber::printTo(Print& p) const
   free(buf);
   return len;
 }
+#endif
 
 // add
 BigNumber & BigNumber::operator+= (const BigNumber & n)
