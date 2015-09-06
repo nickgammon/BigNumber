@@ -10,7 +10,7 @@
 
 #include "BigNumber.h"
 
-int BigNumber::scale_ = 0;
+uint16_t BigNumber::scale_ = 0;
 
 // constructor
 BigNumber::BigNumber () : num_ (NULL) {
@@ -19,7 +19,7 @@ BigNumber::BigNumber () : num_ (NULL) {
 } // end of constructor from string
 
 // constructor
-BigNumber::BigNumber (char * s) : num_ (NULL) {
+BigNumber::BigNumber (const char *const s) : num_ (NULL) {
   bc_init_numbers();
   bc_str2num(&num_, s, scale_);
 } // end of constructor from string
@@ -74,19 +74,16 @@ BigNumber::~BigNumber ()
 } // end of destructor
 
 // set scale factor (number of places after the decimal point)
-int BigNumber::setScale (const int scale)
+int BigNumber::setScale (const uint16_t scale)
 {
-  int old_scale = scale_;
-  if (scale >= 0)
-    scale_ = scale;
-  else
-    scale_ = 0;
+  uint16_t old_scale = scale_;
+  scale_ = scale;
   return old_scale;
 }  // end of BigNumber::setScale
 
 // initialize package
 // supply scale (number of decimal places): default zero
-void BigNumber::begin (const int scale)
+void BigNumber::begin (const uint16_t scale)
 {
   scale_ = scale;
 } // end of BigNumber::begin

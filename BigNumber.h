@@ -24,7 +24,7 @@ class BigNumber
 #endif
 {
   // the current scaling amount - shared amongst all BigNumbers
-  static int scale_;
+  static uint16_t scale_;
 
   // member variable (the big number)
   bc_num        num_;
@@ -33,7 +33,7 @@ public:
  
   // constructors
   BigNumber ();  // default constructor
-  BigNumber (char * s);   // constructor from string
+  BigNumber (const char *const s);   // constructor from string
   BigNumber (const int32_t n);  // constructor from int
   BigNumber (const uint32_t n);  // constructor from unsigned int
   BigNumber (const int64_t n);  // constructor from long long int
@@ -46,9 +46,9 @@ public:
   ~BigNumber ();
   
   // static methods: initialize package, and set global scaling factor
-  static void begin (const int scale = 0);
+  static void begin (const uint16_t scale = 0);
   static void finish ();  // free memory used by 'begin' method
-  static int setScale (const int scale = 0);
+  static int setScale (const uint16_t scale = 0);
   
   // for outputting purposes ...
   char * toString () const;  // returns number as string, MUST FREE IT after use!
@@ -115,8 +115,6 @@ public:
   void divMod (const BigNumber divisor, BigNumber & quotient, BigNumber & remainder) const;
   // raise number by power, modulus modulus
   BigNumber powMod (const BigNumber power, const BigNumber & modulus) const;
-  
 };  // end class declaration
-
 
 #endif
