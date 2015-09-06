@@ -647,11 +647,11 @@ _bc_shift_addsub (bc_num accum, bc_num val, int16_t shift, int16_t sub)
       *accp -= *valp-- + carry;
       if (*accp < 0) {
 	carry = 1;
-        *accp-- += BASE;
+        *accp += BASE;
       } else {
 	carry = 0;
-	accp--;
       }
+      accp--;
     }
     while (carry) {
       *accp -= carry;
@@ -666,11 +666,11 @@ _bc_shift_addsub (bc_num accum, bc_num val, int16_t shift, int16_t sub)
       *accp += *valp-- + carry;
       if (*accp > (BASE-1)) {
 	carry = 1;
-        *accp-- -= BASE;
+        *accp -= BASE;
       } else {
 	carry = 0;
-	accp--;
       }
+      accp--;
     }
     while (carry) {
       *accp += carry;
