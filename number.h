@@ -116,11 +116,17 @@ _PROTOTYPE(bc_num bc_copy_num, (bc_num num));
 
 _PROTOTYPE(void bc_init_num, (bc_num *num));
 
-_PROTOTYPE(void bc_str2num, (bc_num *num, const char *str, int scale));
+_PROTOTYPE(void bc_str2num, (bc_num *num, char *str, int scale));
 
 _PROTOTYPE(char *bc_num2str, (bc_num num));
 
-_PROTOTYPE(void bc_int2num, (bc_num *num, int val));
+#include <stdint.h>
+_PROTOTYPE(void bc_int32_2num, (bc_num *num, int32_t val));
+_PROTOTYPE(void bc_uint32_2num, (bc_num *num, uint32_t val));
+_PROTOTYPE(void bc_int64_2num, (bc_num *num, int64_t val));
+_PROTOTYPE(void bc_uint64_2num, (bc_num *num, uint64_t val));
+
+_PROTOTYPE(void bc_double2num, (bc_num *num, double val));
 
 _PROTOTYPE(long bc_num2long, (bc_num num));
 

@@ -12,16 +12,17 @@
 #define _BigNumber_h
 
 #include <stddef.h>
+#ifndef NOT_ARDUINO
 #include <Arduino.h>
+#endif
 
-extern "C" 
-{
- #include "number.h" 
-}
+#include "number.h" 
 
-class BigNumber : public Printable
+class BigNumber
+#ifndef NOT_ARDUINO
+: public Printable
+#endif
 {
-  
   // the current scaling amount - shared amongst all BigNumbers
   static int scale_;
 
@@ -32,8 +33,12 @@ public:
  
   // constructors
   BigNumber ();  // default constructor
-  BigNumber (const char * s);   // constructor from string
-  BigNumber (const int n);  // constructor from int
+  BigNumber (char * s);   // constructor from string
+  BigNumber (const int32_t n);  // constructor from int
+  BigNumber (const uint32_t n);  // constructor from unsigned int
+  BigNumber (const int64_t n);  // constructor from long long int
+  BigNumber (const uint64_t n);  // constructor from long long unsigned int
+  BigNumber (const double n);  // constructor from double
   // copy constructor
   BigNumber (const BigNumber & rhs); 
  
@@ -48,7 +53,9 @@ public:
   // for outputting purposes ...
   char * toString () const;  // returns number as string, MUST FREE IT after use!
   operator long () const;
+#ifndef NOT_ARDUINO
   virtual size_t printTo(Print& p) const; // for Arduino Serial.print()
+#endif
 
   // operators ... assignment
   BigNumber & operator= (const BigNumber & rhs);
