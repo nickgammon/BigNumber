@@ -14,38 +14,31 @@ uint16_t BigNumber::scale_ = 0;
 
 // constructor
 BigNumber::BigNumber () : num_ (NULL) {
-  bc_init_numbers();
   bc_init_num (&num_);  // default to zero
 } // end of constructor from string
 
 // constructor
 BigNumber::BigNumber (const char *const s) : num_ (NULL) {
-  bc_init_numbers();
   bc_str2num(&num_, s, scale_);
 } // end of constructor from string
 
 BigNumber::BigNumber (const int32_t n) : num_ (NULL) {
-  bc_init_numbers();
   bc_int32_2num (&num_, n);
 } // end of constructor from int
 
 BigNumber::BigNumber(const uint32_t n) : num_ (NULL) {
-  bc_init_numbers();
   bc_uint32_2num(&num_, n);
 }
 
 BigNumber::BigNumber(const int64_t n) : num_ (NULL) {
-  bc_init_numbers();
   bc_int64_2num(&num_, n);
 }
 
 BigNumber::BigNumber(const uint64_t n) : num_ (NULL) {
-  bc_init_numbers();
   bc_uint64_2num(&num_, n);
 }
 
 BigNumber::BigNumber(const double n) : num_ (NULL) {
-  bc_init_numbers();
   bc_double2num(&num_, n);
 }
 
@@ -85,6 +78,7 @@ int BigNumber::setScale (const uint16_t scale)
 // supply scale (number of decimal places): default zero
 void BigNumber::begin (const uint16_t scale)
 {
+  bc_init_numbers();
   scale_ = scale;
 } // end of BigNumber::begin
 
