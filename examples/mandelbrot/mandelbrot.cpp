@@ -1,3 +1,5 @@
+// this code is (C) 2015 by folkert@vanheusden.com
+// it is released under AGPL v3.0
 #include <math.h>
 #include <stdint.h>
 #include <stdio.h>
