@@ -3,7 +3,8 @@
 //  
 //  Author:  Nick Gammon
 //  Date:    22nd January 2013.
-//  Version: 3.1
+//  Contributors: Paul Stoffregen, S. Downey
+//  Version: 3.5
 //  Released into the public domain.
 //  Added print function as suggested by Paul Stoffregen.
 //  Changed printTo to return the length, as required.

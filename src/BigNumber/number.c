@@ -48,9 +48,7 @@ bc_num _two_;
 
 /* new_num allocates a number and sets fields to known values. */
 
-bc_num
-bc_new_num (length, scale)
-     int length, scale;
+bc_num bc_new_num (int length, int scale)
 {
   bc_num temp;
 
@@ -70,9 +68,7 @@ bc_new_num (length, scale)
 /* "Frees" a bc_num NUM.  Actually decreases reference count and only
    frees the storage if reference count is zero. */
 
-void
-bc_free_num (num)
-    bc_num *num;
+void bc_free_num (bc_num *num)
 {
   if (*num == NULL) return;
   (*num)->n_refs--;
@@ -87,8 +83,7 @@ bc_free_num (num)
 
 /* Intitialize the number package! */
 
-void
-bc_init_numbers ()
+void bc_init_numbers ()
 {
   _zero_ = bc_new_num (1,0);
   _one_  = bc_new_num (1,0);
@@ -100,9 +95,7 @@ bc_init_numbers ()
 
 /* Make a copy of a number!  Just increments the reference count! */
 
-bc_num
-bc_copy_num (num)
-     bc_num num;
+bc_num bc_copy_num (bc_num num)
 {
   num->n_refs++;
   return num;
@@ -111,9 +104,7 @@ bc_copy_num (num)
 
 /* Initialize a number NUM by making it a copy of zero. */
 
-void
-bc_init_num (num)
-     bc_num *num;
+void bc_init_num (bc_num *num)
 {
   *num = bc_copy_num (_zero_);
 }
@@ -122,9 +113,7 @@ bc_init_num (num)
    _bc_rm_leading_zeros just moves the data "value" pointer to the
    correct place and adjusts the length. */
 
-static void
-_bc_rm_leading_zeros (num)
-     bc_num num;
+static void _bc_rm_leading_zeros (bc_num num)
 {
   /* We can move n_value to point to the first non zero digit! */
   while (*num->n_value == 0 && num->n_len > 1) {
@@ -138,11 +127,7 @@ _bc_rm_leading_zeros (num)
    than N2 and +1 if N1 is greater than N2.  If USE_SIGN is false, just
    compare the magnitudes. */
 
-static int
-_bc_do_compare (n1, n2, use_sign, ignore_last)
-     bc_num n1, n2;
-     int use_sign;
-     int ignore_last;
+static int _bc_do_compare (bc_num n1, bc_num n2, int use_sign, int ignore_last)
 {
   char *n1ptr, *n2ptr;
   int  count;
@@ -247,27 +232,21 @@ _bc_do_compare (n1, n2, use_sign, ignore_last)
 
 /* This is the "user callable" routine to compare numbers N1 and N2. */
 
-int
-bc_compare (n1, n2)
-     bc_num n1, n2;
+int bc_compare (bc_num n1, bc_num n2)
 {
   return _bc_do_compare (n1, n2, TRUE, FALSE);
 }
 
 /* In some places we need to check if the number is negative. */
 
-char
-bc_is_neg (num)
-     bc_num num;
+char bc_is_neg (bc_num num)
 {
   return num->n_sign == MINUS;
 }
 
 /* In some places we need to check if the number NUM is zero. */
 
-char
-bc_is_zero (num)
-     bc_num num;
+char bc_is_zero (bc_num num)
 {
   int  count;
   char *nptr;
@@ -292,10 +271,7 @@ bc_is_zero (num)
    Specifically, all but the last digit is 0 and the last digit is 1.
    Last digit is defined by scale. */
 
-char
-bc_is_near_zero (num, scale)
-     bc_num num;
-     int scale;
+char bc_is_near_zero (bc_num num, int scale)
 {
   int  count;
   char *nptr;
@@ -322,10 +298,7 @@ bc_is_near_zero (num, scale)
    returned.  The signs of N1 and N2 are ignored.
    SCALE_MIN is to set the minimum scale of the result. */
 
-static bc_num
-_bc_do_add (n1, n2, scale_min)
-     bc_num n1, n2;
-     int scale_min;
+static bc_num _bc_do_add (bc_num n1, bc_num n2, int scale_min)
 {
   bc_num sum;
   int sum_scale, sum_digits;
@@ -414,10 +387,7 @@ _bc_do_add (n1, n2, scale_min)
    assumed to be larger than N2.  SCALE_MIN is the minimum scale
    of the result. */
 
-static bc_num
-_bc_do_sub (n1, n2, scale_min)
-     bc_num n1, n2;
-     int scale_min;
+static bc_num _bc_do_sub (bc_num n1, bc_num n2, int scale_min)
 {
   bc_num diff;
   int diff_scale, diff_len;
@@ -514,10 +484,7 @@ _bc_do_sub (n1, n2, scale_min)
    N2 is subtracted from N1 and the result placed in RESULT.  SCALE_MIN
    is the minimum scale for the result. */
 
-void
-bc_sub (n1, n2, result, scale_min)
-     bc_num n1, n2, *result;
-     int scale_min;
+void bc_sub (bc_num n1, bc_num n2, bc_num *result, int scale_min)
 {
   bc_num diff = NULL;
   int cmp_res;
@@ -564,10 +531,7 @@ bc_sub (n1, n2, result, scale_min)
    N1 is added to N2 and the result placed into RESULT.  SCALE_MIN
    is the minimum scale for the result. */
 
-void
-bc_add (n1, n2, result, scale_min)
-     bc_num n1, n2, *result;
-     int scale_min;
+void bc_add (bc_num n1, bc_num n2, bc_num *result, int scale_min)
 {
   bc_num sum = NULL;
   int cmp_res;
@@ -619,10 +583,7 @@ int mul_base_digits = MUL_BASE_DIGITS;
 
 /* Multiply utility routines */
 
-static bc_num
-new_sub_num (length, scale, value)
-     int length, scale;
-     char *value;
+static bc_num new_sub_num (int length, int scale, char *value)
 {
   bc_num temp;
 
@@ -638,8 +599,7 @@ new_sub_num (length, scale, value)
 }
 
 static void
-_bc_simp_mul (bc_num n1, int n1len, bc_num n2, int n2len, bc_num *prod,
-              int full_scale)
+_bc_simp_mul (bc_num n1, int n1len, bc_num n2, int n2len, bc_num *prod)
 {
   char *n1ptr, *n2ptr, *pvptr;
   char *n1end, *n2end;          /* To the end of n1 and n2. */
@@ -739,11 +699,9 @@ _bc_shift_addsub (bc_num accum, bc_num val, int shift, int sub)
    B is the base of storage, number of digits in u1,u0 close to equal.
 */
 static void
-_bc_rec_mul (bc_num u, int ulen, bc_num v, int vlen, bc_num *prod,
-             int full_scale)
+_bc_rec_mul (bc_num u, int ulen, bc_num v, int vlen, bc_num *prod)
 {
   bc_num u0, u1, v0, v1;
-  int u0len, v0len;
   bc_num m1, m2, m3, d1, d2;
   int n, prodlen, m1zero;
   int d1len, d2len;
@@ -752,7 +710,7 @@ _bc_rec_mul (bc_num u, int ulen, bc_num v, int vlen, bc_num *prod,
   if ((ulen+vlen) < mul_base_digits
       || ulen < MUL_SMALL_DIGITS
       || vlen < MUL_SMALL_DIGITS ) {
-    _bc_simp_mul (u, ulen, v, vlen, prod, full_scale);
+    _bc_simp_mul (u, ulen, v, vlen, prod);
     return;
   }
 
@@ -776,10 +734,8 @@ _bc_rec_mul (bc_num u, int ulen, bc_num v, int vlen, bc_num *prod,
     }
   _bc_rm_leading_zeros (u1);
   _bc_rm_leading_zeros (u0);
-  u0len = u0->n_len;
   _bc_rm_leading_zeros (v1);
   _bc_rm_leading_zeros (v0);
-  v0len = v0->n_len;
 
   m1zero = bc_is_zero(u1) || bc_is_zero(v1);
 
@@ -797,17 +753,17 @@ _bc_rec_mul (bc_num u, int ulen, bc_num v, int vlen, bc_num *prod,
   if (m1zero)
     m1 = bc_copy_num (_zero_);
   else
-    _bc_rec_mul (u1, u1->n_len, v1, v1->n_len, &m1, 0);
+    _bc_rec_mul (u1, u1->n_len, v1, v1->n_len, &m1);
 
   if (bc_is_zero(d1) || bc_is_zero(d2))
     m2 = bc_copy_num (_zero_);
   else
-    _bc_rec_mul (d1, d1len, d2, d2len, &m2, 0);
+    _bc_rec_mul (d1, d1len, d2, d2len, &m2);
 
   if (bc_is_zero(u0) || bc_is_zero(v0))
     m3 = bc_copy_num (_zero_);
   else
-    _bc_rec_mul (u0, u0->n_len, v0, v0->n_len, &m3, 0);
+    _bc_rec_mul (u0, u0->n_len, v0, v0->n_len, &m3);
 
   /* Initialize product */
   prodlen = ulen+vlen+1;
@@ -837,10 +793,7 @@ _bc_rec_mul (bc_num u, int ulen, bc_num v, int vlen, bc_num *prod,
    the result being MIN(N2 scale+N1 scale, MAX (SCALE, N2 scale, N1 scale)).
    */
 
-void
-bc_multiply (n1, n2, prod, scale)
-     bc_num n1, n2, *prod;
-     int scale;
+void bc_multiply (bc_num n1, bc_num n2, bc_num *prod, int scale)
 {
   bc_num pval;
   int len1, len2;
@@ -853,7 +806,7 @@ bc_multiply (n1, n2, prod, scale)
   prod_scale = MIN(full_scale,MAX(scale,MAX(n1->n_scale,n2->n_scale)));
 
   /* Do the multiply */
-  _bc_rec_mul (n1, len1, n2, len2, &pval, full_scale);
+  _bc_rec_mul (n1, len1, n2, len2, &pval);
 
   /* Assign to prod and clean up the number. */
   pval->n_sign = ( n1->n_sign == n2->n_sign ? PLUS : MINUS );
@@ -872,11 +825,7 @@ bc_multiply (n1, n2, prod, scale)
    placed into RESULT.  It is written so that NUM and RESULT can be
    the same pointers.  */
 
-static void
-_one_mult (num, size, digit, result)
-     unsigned char *num;
-     int size, digit;
-     unsigned char *result;
+static void _one_mult (unsigned char *num, int size, int digit, unsigned char *result)
 {
   int carry, value;
   unsigned char *nptr, *rptr;
@@ -912,10 +861,7 @@ _one_mult (num, size, digit, result)
    digits after the decimal point is SCALE. It returns -1 if division
    by zero is tried.  The algorithm is found in Knuth Vol 2. p237. */
 
-int
-bc_divide (n1, n2, quot, scale)
-     bc_num n1, n2, *quot;
-     int scale;
+int bc_divide (bc_num n1, bc_num n2, bc_num *quot, int scale)
 {
   bc_num qval;
   unsigned char *num1, *num2;
@@ -1108,10 +1054,7 @@ bc_divide (n1, n2, quot, scale)
    is NULL then that store will be omitted.
  */
 
-int
-bc_divmod (num1, num2, quot, rem, scale)
-     bc_num num1, num2, *quot, *rem;
-     int scale;
+int bc_divmod (bc_num num1, bc_num num2, bc_num *quot, bc_num *rem, int scale)
 {
   bc_num quotient = NULL;
   bc_num temp;
@@ -1145,10 +1088,7 @@ bc_divmod (num1, num2, quot, rem, scale)
 /* Modulo for numbers.  This computes NUM1 % NUM2  and puts the
    result in RESULT.   */
 
-int
-bc_modulo (num1, num2, result, scale)
-     bc_num num1, num2, *result;
-     int scale;
+int bc_modulo (bc_num num1, bc_num num2, bc_num *result, int scale)
 {
   return bc_divmod (num1, num2, NULL, result, scale);
 }
@@ -1157,10 +1097,7 @@ bc_modulo (num1, num2, result, scale)
    placed in RESULT.  If a EXPO is not an integer,
    only the integer part is used.  */
 
-int
-bc_raisemod (base, expo, mod, result, scale)
-     bc_num base, expo, mod, *result;
-     int scale;
+int bc_raisemod (bc_num base, bc_num expo, bc_num mod, bc_num *result, int scale)
 {
   bc_num power, exponent, parity, temp;
   int rscale;
@@ -1218,10 +1155,7 @@ bc_raisemod (base, expo, mod, result, scale)
    Maximum exponent is LONG_MAX.  If a NUM2 is not an integer,
    only the integer part is used.  */
 
-void
-bc_raise (num1, num2, result, scale)
-     bc_num num1, num2, *result;
-     int scale;
+void bc_raise (bc_num num1, bc_num num2, bc_num *result, int scale)
 {
    bc_num temp, power;
    long exponent;
@@ -1302,10 +1236,7 @@ bc_raise (num1, num2, result, scale)
 /* Take the square root NUM and return it in NUM with SCALE digits
    after the decimal place. */
 
-int
-bc_sqrt (num, scale)
-     bc_num *num;
-     int scale;
+int bc_sqrt (bc_num *num, int scale)
 {
   int rscale, cmp_res, done;
   int cscale;
@@ -1396,10 +1327,7 @@ bc_sqrt (num, scale)
    a long, this function returns a zero.  This can be detected by checking
    the NUM for zero after having a zero returned. */
 
-long
-bc_num2long (num)
-     bc_num num;
-{
+long bc_num2long (bc_num num){
   long val;
   char *nptr;
   int  index;
@@ -1424,10 +1352,7 @@ bc_num2long (num)
 
 /* Convert an integer VAL to a bc number NUM. */
 
-void
-bc_int2num (num, val)
-     bc_num *num;
-     int val;
+void bc_int2num (bc_num *num, int val)
 {
   char buffer[30];
   char *bptr, *vptr;
@@ -1466,10 +1391,7 @@ bc_int2num (num, val)
 }
 
 /* Convert a numbers to a string.  Base 10 only.*/
-
-char
-*num2str (num)
-      bc_num num;
+char *num2str (bc_num num)
 {
   char *str, *sptr;
   char *nptr;
@@ -1506,11 +1428,7 @@ char
 }
 /* Convert strings to bc numbers.  Base 10 only.*/
 
-void
-bc_str2num (num, str, scale)
-     bc_num *num;
-     const char *str;
-     int scale;
+void bc_str2num (bc_num *num, const char *str, int scale)
 {
   int digits, strscale;
   const char *ptr;
@@ -1596,5 +1514,3 @@ void bc_error (const int mesg)
     while (1) // some IDEs don't have the exit() function
       { }
 } // end of bc_error
-
-
