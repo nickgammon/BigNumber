@@ -34,6 +34,7 @@ public:
   BigNumber ();  // default constructor
   BigNumber (const char * s);   // constructor from string
   BigNumber (const int n);  // constructor from int
+  BigNumber (const double n); //constructor from double
   // copy constructor
   BigNumber (const BigNumber & rhs); 
  
