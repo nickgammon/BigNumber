@@ -132,6 +132,8 @@ _PROTOTYPE(char bc_is_near_zero, (bc_num num, int scale));
 
 _PROTOTYPE(char bc_is_neg, (bc_num num));
 
+_PROTOTYPE(void bc_double2num, (bc_num *num, double val));
+
 _PROTOTYPE(void bc_add, (bc_num n1, bc_num n2, bc_num *result, int scale_min));
 
 _PROTOTYPE(void bc_sub, (bc_num n1, bc_num n2, bc_num *result, int scale_min));
