@@ -120,6 +120,8 @@ _PROTOTYPE(void bc_str2num, (bc_num *num, const char *str, int scale));
 
 _PROTOTYPE(char *bc_num2str, (bc_num num));
 
+_PROTOTYPE(double bc_num2double, (bc_num num));
+
 _PROTOTYPE(void bc_int2num, (bc_num *num, int val));
 
 _PROTOTYPE(long bc_num2long, (bc_num num));
