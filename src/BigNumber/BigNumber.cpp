@@ -258,8 +258,8 @@ BigNumber BigNumber::log() const
 {
   BigNumber result;
   double numerus_d = bc_num2double(num_);
-  double logres = log(d);
-  result.num_ =  bc_double2num(res);
+  double logres = log(numerus_d);
+  result.num_ =  bc_double2num(logres);
   return result;
 }
 
@@ -282,7 +282,7 @@ BigNumber BigNumber::log(const BigNumber base) const
 double BigNumber::log_d() const
 {
   double numerus_d = bc_num2double(num_);
-  return log(d);
+  return log(numerus_d);
 }
 
 double BigNumber::log_d(const BigNumber base) const
