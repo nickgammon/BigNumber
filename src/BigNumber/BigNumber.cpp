@@ -259,7 +259,7 @@ BigNumber BigNumber::log() const
   BigNumber result;
   double numerus_d = bc_num2double(num_);
   double logres = log(numerus_d);
-  result.num_ =  bc_double2num(logres);
+  bc_double2num(&result.num_, logres);
   return result;
 }
 
