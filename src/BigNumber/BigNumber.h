@@ -110,7 +110,11 @@ public:
   void divMod (const BigNumber divisor, BigNumber & quotient, BigNumber & remainder) const;
   // raise number by power, modulus modulus
   BigNumber powMod (const BigNumber power, const BigNumber & modulus) const;
-  
+  //logarithms
+  BigNumber log() const;
+  BigNumber log(const BigNumber base) const;
+  double log_d() const;
+  double log_d(const BigNumber base) const;
 };  // end class declaration
 
 

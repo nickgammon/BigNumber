@@ -254,12 +254,6 @@ BigNumber BigNumber::powMod (const BigNumber power, const BigNumber & modulus) c
   return result;
 }
 
-double BigNumber::log_d() const
-{
-  double numerus_d = bc_num2double(num_);
-  return log(d);
-}
-
 BigNumber BigNumber::log() const
 {
   BigNumber result;
@@ -267,6 +261,28 @@ BigNumber BigNumber::log() const
   double logres = log(d);
   result.num_ =  bc_double2num(res);
   return result;
+}
+
+BigNumber BigNumber::log(const BigNumber base) const
+{
+  BigNumber result;
+  double numerus_d = bc_num2double(num_);
+  double base_d = bc_num2double(base.num_);
+  double log_n = log(numerus_d);
+  double log_b = log(base_d);
+  BigNumber a;
+  BigNumber b;
+  bc_double2num(&a.num_, log_n);
+  bc_double2num(&b.num_, log_b);
+  bc_divide(a.num_, b.num_, &result.num_, scale_);
+  return result;
+}
+
+
+double BigNumber::log_d() const
+{
+  double numerus_d = bc_num2double(num_);
+  return log(d);
 }
 
 double BigNumber::log_d(const BigNumber base) const
@@ -283,19 +299,4 @@ double BigNumber::log_d(const BigNumber base) const
   bc_divide(a.num_, b.num_, &result.num_, scale_);
   double res = bc_num2double(result.num_);
   return res;
-}
-
-BigNumber BigNumber::log(const BigNumber base) const
-{
-  BigNumber result;
-  double numerus_d = bc_num2double(num_);
-  double base_d = bc_num2double(base.num_);
-  double log_n = log(numerus_d);
-  double log_b = log(base_d);
-  BigNumber a;
-  BigNumber b;
-  bc_double2num(&a.num_, log_n);
-  bc_double2num(&b.num_, log_b);
-  bc_divide(a.num_, b.num_, &result.num_, scale_);
-  return result;
 }
