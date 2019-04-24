@@ -1495,6 +1495,13 @@ void bc_str2num (bc_num *num, const char *str, int scale)
     }
 }
 
+//flok99's pull request
+void bc_double2num(bc_num *num, double val) {
+  char buffer[30];
+  dtostrf(val, sizeof buffer - 1, sizeof buffer - 3, buffer);
+  bc_str2num(num, buffer, strlen(buffer));
+}
+
 /* Added by NJG to remove a memory leak */
 
 void
