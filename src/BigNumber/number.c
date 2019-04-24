@@ -1349,6 +1349,11 @@ long bc_num2long (bc_num num){
     return (-val);
 }
 
+double bc_num2double(bc_num num){
+    const char * buf_ptr = bc_num2str(num);
+    return atof(buf_ptr);
+}
+
 
 /* Convert an integer VAL to a bc number NUM. */
 
