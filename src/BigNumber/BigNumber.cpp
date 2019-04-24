@@ -101,6 +101,11 @@ BigNumber::operator long () const
   return bc_num2long (num_);
 } // end of BigNumber::operator long
 
+BigNumber::operator double () const
+{
+  return bc_num2double (num_);
+} // end of BigNumber::operator double
+
 // Allow Arduino's Serial.print() to print BigNumber objects!
 size_t BigNumber::printTo(Print& p) const
 {
