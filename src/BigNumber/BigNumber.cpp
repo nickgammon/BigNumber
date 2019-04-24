@@ -1,4 +1,4 @@
-//
+//  useless comment
 //  BigNumber.cpp
 //  
 //  Author:  Nick Gammon
