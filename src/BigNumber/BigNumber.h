@@ -49,6 +49,7 @@ public:
   // for outputting purposes ...
   char * toString () const;  // returns number as string, MUST FREE IT after use!
   operator long () const;
+  operator double() const;
   virtual size_t printTo(Print& p) const; // for Arduino Serial.print()
 
   // operators ... assignment
