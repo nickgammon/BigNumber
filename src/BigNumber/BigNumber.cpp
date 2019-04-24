@@ -30,6 +30,11 @@ BigNumber::BigNumber (const int n) : num_ (NULL)  // constructor from int
   bc_int2num (&num_, n);
 } // end of constructor from int
 
+//flok99
+BigNumber::BigNumber(const double n) : num_ (NULL) {  //constructor from double
+   bc_double2num(&num_, n);
+} //end of constructor from double
+
 // copy constructor
 BigNumber::BigNumber (const BigNumber & rhs)
   {
