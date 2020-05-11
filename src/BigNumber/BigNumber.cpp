@@ -135,7 +135,21 @@ void BigNumber::finish ()
 //      free (s);
 char * BigNumber::toString () const
 {
-  return bc_num2str(num_);
+  char* a = bc_num2str(num_);
+  int64_t size = 0;
+  bool removeZerosAfterPoint = false;
+  while(a[size] != 0) {
+    if(a[size] == '.') removeZerosAfterPoint = true;
+    size++;
+  }
+  if (removeZerosAfterPoint) {
+    while (a[size - 1] == '0') {
+      size--;
+    }
+    if (a[size - 1] == '.') size--;
+    a[size] = 0;
+  }
+  return a;
 } // end of BigNumber::toString
 
 BigNumber::operator long () const
@@ -147,7 +161,7 @@ BigNumber::operator long () const
 #if defined(ARDUINO_ARCH_AVR) || defined(ARDUINO_ARCH_SAM) || defined(Arduino_h)
 size_t BigNumber::printTo(Print& p) const
 {
-  char *buf = bc_num2str(num_);
+  char *buf = toString();
   size_t len = p.write(buf);
   free(buf);
   return len;
