@@ -13,6 +13,24 @@
 
 int BigNumber::scale_ = 0;
 
+#ifdef STD_INCLUDED
+BigNumber::BigNumber(std::string s) {
+  *this = s.c_str();
+}
+
+std::ostream& operator<<(std::ostream &out, BigNumber num) {
+  out << num.toString();
+  return out;
+}
+
+std::istream& operator>>(std::istream &in, BigNumber &num) {
+  std::string a;
+  in >> a;
+  num = a.c_str();
+  return in;
+}
+#endif
+
 // constructor
 BigNumber::BigNumber () : num_ (NULL)
 {

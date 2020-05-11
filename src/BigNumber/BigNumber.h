@@ -16,6 +16,12 @@
 #include <Arduino.h>
 #endif
 
+#ifdef STD_INCLUDED
+#include <iostream>
+#include <string.h>
+#include <sstream>
+#endif
+
 extern "C"
 {
  #include "number.h"
@@ -115,8 +121,15 @@ public:
   void divMod (const BigNumber divisor, BigNumber & quotient, BigNumber & remainder) const;
   // raise number by power, modulus modulus
   BigNumber powMod (const BigNumber power, const BigNumber & modulus) const;
+#ifdef STD_INCLUDED
+  BigNumber(std::string s);
+#endif
 
 };  // end class declaration
 
+#ifdef STD_INCLUDED
+std::ostream& operator<<(std::ostream &out, BigNumber num);
+std::istream& operator>>(std::istream &in, BigNumber &num);
+#endif
 
 #endif
