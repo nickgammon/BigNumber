@@ -129,6 +129,7 @@ public:
 #ifdef STD_INCLUDED
   BigNumber(std::string s);
 #endif
+  long toLong();
 
 };  // end class declaration
 

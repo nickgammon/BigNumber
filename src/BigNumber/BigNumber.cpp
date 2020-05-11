@@ -293,6 +293,10 @@ BigNumber BigNumber::powMod (const BigNumber power, const BigNumber & modulus) c
   return result;
 }
 
+long BigNumber::toLong() {
+  return bc_num2long (num_);
+}
+
 #ifdef AUTO_SCALING
 void BigNumber::_setScale(int newScale) {
   if (newScale > scale_){
