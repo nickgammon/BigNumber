@@ -11,6 +11,8 @@
 #ifndef _BigNumber_h
 #define _BigNumber_h
 
+#define AUTO_SCALING
+
 #include <stddef.h>
 #if defined(ARDUINO_ARCH_AVR) || defined(ARDUINO_ARCH_SAM) || defined(Arduino_h)
 #include <Arduino.h>
@@ -39,6 +41,9 @@ class BigNumber
   // member variable (the big number)
   bc_num        num_;
 
+#ifdef AUTO_SCALING
+  void _setScale(int newScale);
+#endif
 public:
 
   // constructors

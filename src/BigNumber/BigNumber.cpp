@@ -40,6 +40,35 @@ BigNumber::BigNumber () : num_ (NULL)
 // constructor
 BigNumber::BigNumber (const char * s) : num_ (NULL)
 {
+  begin();
+  bool isZero = 1;
+  int64_t i = 0;
+  while (s[i] != 0) {
+    if (s[i] != '0' || s[i] == '.') {
+      isZero = 0;
+      break;
+    }
+    i++;
+  }
+  if (isZero) {
+    *this = 0;
+    return;
+  }
+#ifdef AUTO_SCALING
+  uint64_t size = 0;
+  uint64_t dotPoint = 0;
+  bool setScale = false;
+  for(; s[size] != 0; size++){
+    if(s[size] == '.'){
+      dotPoint = size;
+      setScale = true;
+    }
+  }
+  while (s[size - 1] == '0') {
+    size--;
+  }
+  if(setScale)_setScale(size - dotPoint - 1);
+#endif
   bc_str2num(&num_, s, scale_);
 } // end of constructor from string
 
@@ -263,3 +292,11 @@ BigNumber BigNumber::powMod (const BigNumber power, const BigNumber & modulus) c
   bc_raisemod (num_, power.num_, modulus.num_, &result.num_, scale_);
   return result;
 }
+
+#ifdef AUTO_SCALING
+void BigNumber::_setScale(int newScale) {
+  if (newScale > scale_){
+    setScale(newScale);
+  }
+}
+#endif
