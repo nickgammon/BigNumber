@@ -303,6 +303,69 @@ BigNumber::BigNumber(String s) {
 }
 #endif
 
+BigNumber::BigNumber(double d) : num_(NULL) {
+  begin();
+  if (d == ((int)d)) {
+    *this = (int)d;
+    return;
+  }
+  char r[20];
+	int number;
+  char tmp2 = 0, tmp = 0, counter = 0;
+  bool isNegative;
+	double number2;
+	isNegative = 0;
+	if (d < 0) {
+		isNegative = 1;
+		d = -d;
+	}
+	number2 = d;
+	number = d;
+	while ((number2 - (double)number) != 0 && !((number2 - (double)number) < 0)) {
+    int count = tmp2 + 1;
+    int result = 1;
+    while(count-- > 0)
+      result *= 10;
+      number2 = d * result;
+      number = number2;
+      tmp2++;
+	}
+  for (tmp = (d > 1) ? 0 : 1; d > 1; tmp++)
+    d /= 10;
+	counter = tmp;
+	tmp = tmp + 1 + tmp2;
+	number = number2;
+	if (isNegative) {
+    tmp++;
+    counter++;
+	}
+	for (int i = tmp; i >= 0 ; i--) {
+    if (i == tmp) {
+      r[i] = '\0';
+    } else if(i == counter) {
+      r[i] = '.';
+    } else if(isNegative && i == 0) {
+      r[i] = '-';
+    } else {
+      r[i] = (number % 10) + '0';
+      number /=10;
+		}
+	}
+#ifdef AUTO_SCALING
+  uint64_t size = 0;
+  uint64_t dotPoint = 0;
+  bool setScale = false;
+  for(; r[size] != 0; size++){
+    if(r[size] == '.'){
+      dotPoint = size;
+      setScale = true;
+    }
+  }
+  if(setScale)_setScale(size - dotPoint - 1);
+#endif
+  bc_str2num(&num_, r, scale_);
+}
+
 #ifdef AUTO_SCALING
 void BigNumber::_setScale(int newScale) {
   if (newScale > scale_){
