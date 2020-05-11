@@ -297,6 +297,12 @@ long BigNumber::toLong() {
   return bc_num2long (num_);
 }
 
+#if defined(ARDUINO_ARCH_AVR) || defined(ARDUINO_ARCH_SAM) || defined(Arduino_h)
+BigNumber::BigNumber(String s) {
+  *this = s.c_str();
+}
+#endif
+
 #ifdef AUTO_SCALING
 void BigNumber::_setScale(int newScale) {
   if (newScale > scale_){

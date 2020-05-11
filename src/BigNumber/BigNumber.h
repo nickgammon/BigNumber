@@ -130,6 +130,9 @@ public:
   BigNumber(std::string s);
 #endif
   long toLong();
+#if defined(ARDUINO_ARCH_AVR) || defined(ARDUINO_ARCH_SAM) || defined(Arduino_h)
+  BigNumber(String s);
+#endif
 
 };  // end class declaration
 
