@@ -134,6 +134,8 @@ public:
   BigNumber(String s);
 #endif
   BigNumber(double d);
+  BigNumber(long data);
+  BigNumber(long long data);
 
 };  // end class declaration
 

@@ -380,6 +380,38 @@ BigNumber::BigNumber(double d) : num_(NULL) {
   bc_str2num(&num_, r, scale_);
 }
 
+BigNumber::BigNumber(long data) : num_ (NULL) {
+  char res[25] = {'0', '0', '0', '0', '0', '0',
+												'0', '0', '0', '0', '0', '0',
+												'0', '0', '0', '0', '0', '0',
+												'0', '0', '0', '0', '0', '0'
+												, '0'};
+			if (data < 0) { res[0] = '-'; data = -data; }
+			uint8_t c = 0;
+			while(data != 0) {
+				res[23 - c++] = (data % 10) + '0';
+				data /= 10;
+			}
+			res[24] = 0;
+      *this = res;
+}
+
+BigNumber::BigNumber(long long data) : num_ (NULL) {
+  char res[25] = {'0', '0', '0', '0', '0', '0',
+												'0', '0', '0', '0', '0', '0',
+												'0', '0', '0', '0', '0', '0',
+												'0', '0', '0', '0', '0', '0'
+												, '0'};
+			if (data < 0) { res[0] = '-'; data = -data; }
+			uint8_t c = 0;
+			while(data != 0) {
+				res[23 - c++] = (data % 10) + '0';
+				data /= 10;
+			}
+			res[24] = 0;
+      *this = res;
+}
+
 #ifdef AUTO_SCALING
 void BigNumber::_setScale(int newScale) {
   if (newScale > scale_){
