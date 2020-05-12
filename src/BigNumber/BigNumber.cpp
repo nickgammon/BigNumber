@@ -311,6 +311,33 @@ long BigNumber::toLong() {
   return bc_num2long (num_);
 }
 
+double BigNumber::toDouble() {
+  char* a = toString();
+  int8_t c = 0;
+  int8_t pointLocation = 0;
+  long res = 0;
+  double ret = 0;
+  while (a[c] != 0) {
+    if (a[c] != '.') {
+      res = res * 10 + a[c] - 48;
+    } else {
+      pointLocation = c;
+    }
+    c++;
+  }
+  if (pointLocation) {
+    for (int8_t i = 1; i < (c - pointLocation); i++) {
+      float tmp = 1;
+      for (int8_t j = (c - pointLocation); j > i; j--) {
+        tmp *= 10;
+      }
+      ret += (res % 10) / tmp;
+      res /= 10;
+    }
+  }
+  return ret + res;
+}
+
 #if defined(ARDUINO_ARCH_AVR) || defined(ARDUINO_ARCH_SAM) || defined(Arduino_h)
 BigNumber::BigNumber(String s) {
   *this = s.c_str();
