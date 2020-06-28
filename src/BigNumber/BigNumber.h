@@ -42,7 +42,7 @@ class BigNumber
   bc_num        num_;
 
 #ifdef AUTO_SCALING
-  void _setScale(int newScale);
+  static void _setScale(int newScale);
 #endif
 public:
 

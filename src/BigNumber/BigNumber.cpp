@@ -118,7 +118,7 @@ int BigNumber::setScale (const int scale)
 void BigNumber::begin (const int scale)
 {
   bc_init_numbers ();
-  scale_ = scale;
+  _setScale(scale);
 } // end of BigNumber::begin
 
 // finished with package
