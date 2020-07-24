@@ -14,6 +14,7 @@
 #define AUTO_SCALING
 
 #include <stddef.h>
+#include <stdint.h>
 #if defined(ARDUINO_ARCH_AVR) || defined(ARDUINO_ARCH_SAM) || defined(Arduino_h)
 #include <Arduino.h>
 #endif
