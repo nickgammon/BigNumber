@@ -214,7 +214,7 @@ BigNumber & BigNumber::operator%= (const BigNumber & n)
 {
   bc_num result = NULL;
   bc_init_num (&result);  // in case zero
-  bc_modulo (num_, n.num_, &result, scale_);
+  bc_modulo (num_, n.num_, &result, 0);
   bc_free_num (&num_);
   num_ = result;
   return *this;
