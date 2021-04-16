@@ -1428,6 +1428,10 @@ char *num2str (bc_num num)
 }
 /* Convert strings to bc numbers.  Base 10 only.*/
 
+#ifdef ESP8266
+#define __ctype_ptr__ 0
+#endif
+
 void bc_str2num (bc_num *num, const char *str, int scale)
 {
   int digits, strscale;
@@ -1445,9 +1449,9 @@ void bc_str2num (bc_num *num, const char *str, int scale)
   zero_int = FALSE;
   if ( (*ptr == '+') || (*ptr == '-'))  ptr++;  /* Sign */
   while (*ptr == '0') ptr++;                    /* Skip leading zeros. */
-  while (isdigit((int)*ptr)) ptr++, digits++;   /* digits */
+  while (*ptr > 47 && *ptr < 58) ptr++, digits++;   /* digits */
   if (*ptr == '.') ptr++;                       /* decimal point */
-  while (isdigit((int)*ptr)) ptr++, strscale++; /* digits */
+  while (*ptr > 47 && *ptr < 58) ptr++, strscale++; /* digits */
   if ((*ptr != '\0') || (digits+strscale == 0))
     {
       *num = bc_copy_num (_zero_);
