@@ -13,6 +13,7 @@
 
 #include <stddef.h>
 #include <Arduino.h>
+#include <stdint.h>
 
 extern "C" 
 {
