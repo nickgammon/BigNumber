@@ -233,7 +233,7 @@ BigNumber BigNumber::pow (const BigNumber power) const
 
 void BigNumber::divMod (const BigNumber divisor, BigNumber & quotient, BigNumber & remainder) const
 {
-  bc_divmod (num_, divisor.num_, &quotient.num_, &remainder.num_, scale_);
+  bc_divmod (num_, divisor.num_, &quotient.num_, &remainder.num_, 0);
 }
 
 // raise number by power, modulus modulus
